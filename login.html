@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login</title>
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body class="page login-page">
+
+  <main class="card">
+    <h1 class="title">Login</h1>
+
+    <form id="loginForm" class="form">
+      <label class="label" for="email">Email</label>
+      <input id="email" class="input" type="email" required autocomplete="email" />
+
+      <label class="label" for="password">Password</label>
+      <input id="password" class="input" type="password" required autocomplete="current-password" />
+
+      <button class="btn" type="submit">Sign in</button>
+      <p id="errorBox" class="error"></p>
+    </form>
+  </main>
+
+  <!-- Firebase CDN (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+  <!-- Your scripts -->
+  <script src="js/firebase.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script>
+    initLoginPage();
+  </script>
+</body>
+</html>

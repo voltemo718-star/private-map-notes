@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Map Notes</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+</head>
+<body class="page">
+
+<!-- Hamburger -->
+<button id="hamburgerBtn" aria-label="Menu">☰</button>
+
+<!-- Sidebar -->
+<aside id="sidebar" class="sidebar collapsed">
+  <div class="sidebar-top">
+    <input id="searchInput" class="input" type="text" placeholder="Search notes..." />
+
+    <div class="row-between">
+      <strong>Active notes</strong>
+      <select id="sortSelect" class="input small">
+        <option value="dateDesc">Date (newest)</option>
+        <option value="dateAsc">Date (oldest)</option>
+        <option value="nameAsc">Name (A–Z)</option>
+        <option value="nameDesc">Name (Z–A)</option>
+      </select>
+    </div>
+
+    <div id="activeNotesList" class="notes-list"></div>
+
+    <button id="openArchivedBtn" class="btn secondary" type="button">
+      Archived notes
+    </button>
+  </div>
+
+  <div class="sidebar-bottom">
+    <button class="btn" onclick="logout()">Logout</button>
+  </div>
+</aside>
+
+<!-- Archived Popout -->
+<div id="archivedOverlay" class="overlay hidden">
+  <div class="overlay-card">
+    <div class="overlay-header">
+      <strong>Archived notes</strong>
+      <button id="closeArchivedBtn" class="btn small" type="button">Close</button>
+    </div>
+
+    <div id="archivedNotesList" class="archived-list"></div>
+  </div>
+</div>
+
+
+  <div id="map"></div>
+
+
+<!-- Note popup (temporary UI) -->
+<div id="notePopup" class="note-popup hidden">
+  <div class="note-popup-inner">
+    <div class="note-popup-header">
+      <strong>Create note</strong>
+      <button id="closePopupBtn" type="button">✕</button>
+    </div>
+
+    <label class="label" for="noteTitle">Title</label>
+    <input id="noteTitle" class="input" placeholder="Title" />
+
+    <label class="label" for="noteDesc">Description</label>
+    <textarea id="noteDesc" class="input" rows="4" placeholder="Description"></textarea>
+
+    <label class="label" for="noteColor">Color</label>
+    <select id="noteColor" class="input">
+      <option value="red">Red</option>
+      <option value="blue">Blue</option>
+      <option value="green">Green</option>
+      <option value="orange">Orange</option>
+      <option value="purple">Purple</option>
+    </select>
+
+    <label class="label">Pictures</label>
+
+    <input id="noteImages" class="file-hidden" type="file" accept="image/*" multiple />
+    <label for="noteImages" class="btn secondary">Choose pictures</label>
+
+    <div id="thumbs" class="thumbs"></div>
+
+
+
+    <div class="row" style="gap:8px; justify-content:flex-end; flex-wrap:wrap;">
+      <button id="saveNoteBtn" class="btn" type="button">Save</button>
+      <button id="archiveNoteBtn" class="btn secondary" type="button">Archive</button>
+      <button id="deleteNoteBtn" class="btn secondary" type="button">Delete permanently</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Undo bar -->
+<div id="undoBar" class="undo hidden">
+  <span id="undoMsg"></span>
+  <button id="undoBtn" class="btn small" type="button">Undo</button>
+</div>
+
+<!-- Gallery overlay -->
+<div id="gallery" class="gallery hidden">
+  <div class="gallery-inner">
+    <div class="gallery-controls">
+      <button id="galleryPrev" type="button">←</button>
+      <button id="galleryClose" type="button">Close</button>
+      <button id="galleryNext" type="button">→</button>
+    </div>
+
+    <img id="galleryImg" class="gallery-img" alt="Photo" />
+  </div>
+</div>
+
+  
+  <!-- Firebase CDN (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+  
+
+  <!-- Your scripts -->
+  <script src="js/firebase.js"></script>
+  <script src="js/auth.js"></script>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script src="js/notes.js"></script>
+  <script src="js/undo.js"></script>
+  <script src="js/images.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/menu.js"></script>
+
+
+  <script>
+    requireAuthOnAppPage();
+
+    auth.onAuthStateChanged((user) => {
+      if (!user) return;
+
+      setUserForNotes(user.uid);
+
+      initMap();
+      initGallery();
+
+      initPopupUI();
+      initMenu();
+ 
+
+
+      startActiveNotesListener();
+    });
+  </script>
+
+
+
+</body>
+</html>
