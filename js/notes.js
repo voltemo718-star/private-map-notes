@@ -61,6 +61,11 @@ function startActiveNotesListener() {
       });
 
       notifyActiveNotes();
+      // Re-apply current color filter (if any)
+      if (typeof selectedColorFilter !== "undefined") {
+        applyMapColorFilter(selectedColorFilter);
+      }
+
     }, (err) => {
       console.error("Active notes listener error:", err);
       alert("Error loading notes. Check Console (F12).");
@@ -105,6 +110,25 @@ function onActiveNotesChanged(cb) {
 function notifyActiveNotes() {
   activeNotesSubscribers.forEach((cb) => cb(activeNotesCache));
 }
+
+function applyMapColorFilter(color) {
+  // color = "all" or "red"/"blue"/...
+  for (const [noteId, marker] of markersById.entries()) {
+    const note = activeNotesCache.find(n => n.id === noteId);
+    if (!note) continue;
+
+    const match = (color === "all") || ((note.color || "red") === color);
+
+    if (match) {
+      // show
+      if (!map.hasLayer(marker)) marker.addTo(map);
+    } else {
+      // hide
+      if (map.hasLayer(marker)) marker.remove();
+    }
+  }
+}
+
 
 // Update your snapshot listener to refresh cache
 // In startActiveNotesListener(), inside onSnapshot(), after processing snapshot:

@@ -92,6 +92,16 @@ function initGallery() {
     if (dx > 0) showGalleryAt(galleryIndex - 1);
     else showGalleryAt(galleryIndex + 1);
   });
+
+  window.addEventListener("keydown", (e) => {
+    const isOpen = !document.getElementById("gallery").classList.contains("hidden");
+    if (!isOpen) return;
+
+    if (e.key === "ArrowLeft") showGalleryAt(galleryIndex - 1);
+    if (e.key === "ArrowRight") showGalleryAt(galleryIndex + 1);
+    if (e.key === "Escape") closeGallery();
+  });
+
 }
 
 

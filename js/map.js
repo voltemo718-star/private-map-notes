@@ -276,9 +276,17 @@ function initPopupUI() {
   // ARCHIVE (only in edit mode)
   archiveBtn.onclick = async () => {
     if (!editingNoteId) return;
+
     try {
-      await archiveNote(editingNoteId);
+      const id = editingNoteId; // save id before closing popup
+
+      await archiveNote(id);
       hidePopup();
+
+      showUndo("Note archived", async () => {
+        await unarchiveNote(id);
+      });
+
     } catch (err) {
       console.error(err);
       alert(err.message || "Archive failed");

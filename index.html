@@ -30,6 +30,16 @@
       </select>
     </div>
 
+    <div id="colorFilters" class="color-filters">
+      <button class="color-dot" data-color="all" title="All"></button>
+      <button class="color-dot" data-color="red" title="Red"></button>
+      <button class="color-dot" data-color="blue" title="Blue"></button>
+      <button class="color-dot" data-color="green" title="Green"></button>
+      <button class="color-dot" data-color="orange" title="Orange"></button>
+      <button class="color-dot" data-color="purple" title="Purple"></button>
+    </div>
+
+
     <div id="activeNotesList" class="notes-list"></div>
 
     <button id="openArchivedBtn" class="btn secondary" type="button">
@@ -107,16 +117,15 @@
 
 <!-- Gallery overlay -->
 <div id="gallery" class="gallery hidden">
-  <div class="gallery-inner">
-    <div class="gallery-controls">
-      <button id="galleryPrev" type="button">←</button>
-      <button id="galleryClose" type="button">Close</button>
-      <button id="galleryNext" type="button">→</button>
-    </div>
+  <button id="galleryClose" class="gallery-close" type="button">✕</button>
 
-    <img id="galleryImg" class="gallery-img" alt="Photo" />
-  </div>
+  <button id="galleryPrev" class="gallery-arrow" type="button" aria-label="Previous">←</button>
+
+  <img id="galleryImg" class="gallery-img" alt="Photo" />
+
+  <button id="galleryNext" class="gallery-arrow" type="button" aria-label="Next">→</button>
 </div>
+
 
   
   <!-- Firebase CDN (compat) -->

@@ -1,6 +1,8 @@
 // js/menu.js
 
 let currentActiveNotes = [];
+let selectedColorFilter = "all";
+
 
 function initMenu() {
   const sidebar = document.getElementById("sidebar");
@@ -11,6 +13,25 @@ function initMenu() {
   const openArchivedBtn = document.getElementById("openArchivedBtn");
   const archivedOverlay = document.getElementById("archivedOverlay");
   const closeArchivedBtn = document.getElementById("closeArchivedBtn");
+  
+  // Color filter circles
+  const dots = Array.from(document.querySelectorAll(".color-dot"));
+  function setSelectedDot(color) {
+    selectedColorFilter = color;
+    dots.forEach(d => d.classList.toggle("selected", d.dataset.color === color));
+    renderActiveList();
+    applyMapColorFilter(color);
+  }
+
+  // Default selection = all
+  setSelectedDot("all");
+
+  dots.forEach(dot => {
+    dot.addEventListener("click", () => {
+      setSelectedDot(dot.dataset.color);
+    });
+  });
+
 
   hamburgerBtn.addEventListener("click", () => {
     sidebar.classList.toggle("collapsed");
@@ -53,6 +74,11 @@ function renderActiveList() {
       (n.title || "").toLowerCase().includes(q) ||
       (n.description || "").toLowerCase().includes(q)
     );
+  }
+  
+  // Color filter
+  if (selectedColorFilter !== "all") {
+    items = items.filter(n => (n.color || "red") === selectedColorFilter);
   }
 
   // Sort
